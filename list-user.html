@@ -1,0 +1,66 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <title>Title</title>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+</head>
+
+<body>
+
+    <div class="container">
+        <p> <br> <br>
+            <label for="">Sort</label>
+            <select id="sort" class="form-control">
+            <option value="asc">Name A-Z</option>
+            <option value="desc">Name Z-A</option>
+        </select>
+        </p>
+        <p>
+            <input type="text" class="form-control" placeholder="enter keyword..." id="search">
+        </p>
+        <p>
+            <a href="add-user.html" class="btn btn-success">create</a>
+        </p>
+        <table class="table table-light">
+            <thead>
+                <th>name</th>
+                <th>email</th>
+                <th>status</th>
+                <th>role</th>
+                <th>avartar</th>
+            </thead>
+            <tbody>
+
+            </tbody>
+        </table>
+    </div>
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+    <script src="main.js"></script>
+    <script>
+        //load all user
+        render("http://localhost:3000/users?_expand=role", "tbody")
+
+        //sort
+        $('#sort').addEventListener('change', function() {
+            var action = $('#sort').value
+            if (action == 'asc') {
+                render("http://localhost:3000/users?_expand=role&_sort=name&_order=asc", "tbody")
+            } else if (action == 'desc') {
+                render("http://localhost:3000/users?_expand=role&_sort=name&_order=desc", "tbody")
+            }
+        })
+
+        $('#search').addEventListener('keyup', function() {
+            var search = $('#search').value
+            render("http://localhost:3000/users?_expand=role&q=" + search, "tbody")
+        })
+    </script>
+</body>
+
+</html>

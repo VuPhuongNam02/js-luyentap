@@ -1,0 +1,128 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <title>Title</title>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+</head>
+
+<body>
+    <div class="container">
+        <form action="">
+            <p>
+                <label for="">name</label>
+                <input type="text" id="name" class="form-control">
+                <span id="name"></span>
+            </p>
+            <p>
+                <label for="">email</label>
+                <input type="text" id="email" class="form-control">
+                <span id="email"></span>
+            </p>
+            <p>
+                <label for="">status</label>
+                <select id="status" class="form-control">
+                    <option value="0">Active</option>
+                    <option value="1">InActive</option>
+                </select>
+            </p>
+            <p>
+                <label for="">role</label>
+                <select id="role" class="form-control">
+                   
+                </select>
+            </p>
+            <p>
+                <label for="">avartar</label><br>
+                <input type="file" onchange="previewFile()" class="form-control" id="avartar"><br>
+                <img src="" height="200" alt="Image preview..." id="img-preview">
+            </p>
+            <p>
+                <button type="submit" class="btn btn-success">Update</button>
+            </p>
+        </form>
+    </div>
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+    <script src="main.js"></script>
+    <script>
+        var param = new URLSearchParams(window.location.search)
+        var id = param.get('id')
+
+        //load user by id
+        axios({
+            method: "GET",
+            url: "http://localhost:3000/users/" + id,
+            responseType: "JSON"
+        }).then((data) => {
+            $('#name').value = data.data.name
+            $('#email').value = data.data.email
+            $('#status').value = data.data.status
+            $('#role').value = data.data.roleId
+            $('#img-preview').src = data.data.avartar
+        })
+
+
+        //load role
+        axios({
+            method: "GET",
+            url: "http://localhost:3000/roles",
+            responseType: "JSON"
+        }).then(({
+            data
+        }) => {
+            var html = data.map((item) => {
+                return `<option value="${item.id}">${item.name}</option>`
+            })
+            $('#role').innerHTML = html.join('')
+        })
+
+
+        //add user
+        $('form').addEventListener('submit', (e) => {
+            e.preventDefault()
+            var flag = true
+            var name = $('#name').value
+            var email = $('#email').value
+            if (name.value == '') {
+                $('span#name').innerText = "ko đc để trống"
+                flag = false
+            } else {
+                $('span#name').innerText = ""
+            }
+
+            if (email.value == '') {
+                $('span#email').innerText = "ko đc để trống"
+                flag = false
+            } else {
+                $('span#email').innerText = ""
+            }
+
+            if (flag) {
+                axios({
+                    method: "PUT",
+                    url: "http://localhost:3000/users/" + id,
+                    data: {
+                        name: name,
+                        email: email,
+                        status: parseInt($('#status').value),
+                        avartar: $('#img-preview').getAttribute('src'),
+                        roleId: parseInt($('#role').value),
+                    }
+                }).then((res) => {
+                    if (res.status == 201) {
+                        alert('update successfully')
+                    }
+                    window.location.href = 'list-user.html'
+                })
+            }
+        })
+    </script>
+
+</body>
+
+</html>
