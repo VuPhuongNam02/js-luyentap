@@ -29,8 +29,11 @@ function render(url, div) {
         url: url,
         responseType: "JSON",
     }).then(({ data }) => {
-        var html = data.map((item) => {
-            return `<tr>
+        console.log("data");
+        var html =
+            data &&
+            JSON.parse(data).map((item) => {
+                return `<tr>
                     <td>${item.name}</td>
                     <td>${item.email}</td>
                     <td>${item.status == 0 ? "Active" : "InActive"}</td>
@@ -40,7 +43,7 @@ function render(url, div) {
                       item.id
                     }" class="btn btn-warning">Edit </a> </td>
                     </tr>`;
-        });
+            });
         $(div).innerHTML = html.join("");
     });
 }

@@ -1,14 +1,14 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
 
 <head>
     <title>Title</title>
     <!-- Required meta tags -->
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
 
     <!-- Bootstrap CSS -->
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous" />
 </head>
 
 <body>
@@ -16,29 +16,27 @@
         <form action="">
             <p>
                 <label for="">name</label>
-                <input type="text" id="name" class="form-control">
+                <input type="text" id="name" class="form-control" />
             </p>
             <p>
                 <label for="">email</label>
-                <input type="text" id="email" class="form-control">
+                <input type="text" id="email" class="form-control" />
             </p>
             <p>
                 <label for="">status</label>
                 <select id="status" class="form-control">
-                    <option value="0">Active</option>
-                    <option value="1">InActive</option>
-                </select>
+            <option value="0">Active</option>
+            <option value="1">InActive</option>
+          </select>
             </p>
             <p>
                 <label for="">role</label>
-                <select id="role" class="form-control">
-                   
-                </select>
+                <select id="role" class="form-control"></select>
             </p>
             <p>
-                <label for="">avartar</label><br>
-                <input type="file" onchange="previewFile()" class="form-control" id="avartar"><br>
-                <img src="" height="200" alt="Image preview..." id="img-preview">
+                <label for="">avartar</label><br />
+                <input type="file" onchange="previewFile()" class="form-control" id="avartar" /><br />
+                <img src="" height="200" alt="Image preview..." id="img-preview" />
             </p>
             <p>
                 <button type="submit" class="btn btn-success">create</button>
@@ -52,41 +50,41 @@
         axios({
             method: "GET",
             url: "http://localhost:3000/roles",
-            responseType: "JSON"
+            responseType: "JSON",
         }).then(({
             data
         }) => {
-            var html = data.map((item) => {
-                return `<option value="${item.id}">${item.name}</option>`
-            })
-            $('#role').innerHTML = html.join('')
-        })
-
+            var html =
+                data &&
+                JSON.parse(data).map((item) => {
+                    return `<option value="${item.id}">${item.name}</option>`;
+                });
+            $("#role").innerHTML = html.join("");
+        });
 
         //add user
-        $('form').addEventListener('submit', (e) => {
-            e.preventDefault()
-            console.log('add user');
+        $("form").addEventListener("submit", (e) => {
+            e.preventDefault();
+            console.log("add user");
 
             axios({
                 method: "POST",
                 url: "http://localhost:3000/users",
                 data: {
-                    name: $('#name').value,
-                    email: $('#email').value,
-                    status: parseInt($('#status').value),
-                    avartar: $('#img-preview').getAttribute('src'),
-                    roleId: parseInt($('#role').value),
-                }
+                    name: $("#name").value,
+                    email: $("#email").value,
+                    status: parseInt($("#status").value),
+                    avartar: $("#img-preview").getAttribute("src"),
+                    roleId: parseInt($("#role").value),
+                },
             }).then((res) => {
                 if (res.status == 201) {
-                    alert('create successfully')
+                    alert("create successfully");
                 }
-                window.location.href = 'list-user.html'
-            })
-        })
+                window.location.href = "list-user.html";
+            });
+        });
     </script>
-
 </body>
 
 </html>
