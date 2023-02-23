@@ -46,26 +46,9 @@
     <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
     <script src="main.js"></script>
     <script>
-        //load role
-        axios({
-            method: "GET",
-            url: "http://localhost:3000/roles",
-            responseType: "JSON",
-        }).then(({
-            data
-        }) => {
-            var html =
-                data &&
-                JSON.parse(data).map((item) => {
-                    return `<option value="${item.id}">${item.name}</option>`;
-                });
-            $("#role").innerHTML = html.join("");
-        });
-
         //add user
         $("form").addEventListener("submit", (e) => {
             e.preventDefault();
-            console.log("add user");
 
             axios({
                 method: "POST",
@@ -78,9 +61,6 @@
                     roleId: parseInt($("#role").value),
                 },
             }).then((res) => {
-                if (res.status == 201) {
-                    alert("create successfully");
-                }
                 window.location.href = "list-user.html";
             });
         });

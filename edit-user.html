@@ -50,7 +50,6 @@
     <script>
         var param = new URLSearchParams(window.location.search);
         var id = param.get("id");
-
         //load user by id
         axios({
             method: "GET",
@@ -76,23 +75,7 @@
             $("#img-preview").src = avartar;
         });
 
-        //load role
-        axios({
-            method: "GET",
-            url: "http://localhost:3000/roles",
-            responseType: "JSON",
-        }).then(({
-            data
-        }) => {
-            var html =
-                data &&
-                JSON.parse(data).map((item) => {
-                    return `<option value="${item.id}">${item.name}</option>`;
-                });
-            $("#role").innerHTML = html.join("");
-        });
-
-        //add user
+        //update user
         $("form").addEventListener("submit", (e) => {
             e.preventDefault();
             var flag = true;
@@ -124,9 +107,6 @@
                         roleId: parseInt($("#role").value),
                     },
                 }).then((res) => {
-                    if (res.status == 201) {
-                        alert("update successfully");
-                    }
                     window.location.href = "list-user.html";
                 });
             }

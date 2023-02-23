@@ -21,9 +21,8 @@ function previewFile() {
     }
 }
 
-//render
+//list user
 function render(url, div) {
-    //load role
     axios({
         method: "GET",
         url: url,
@@ -47,3 +46,17 @@ function render(url, div) {
         $(div).innerHTML = html.join("");
     });
 }
+
+//load role
+axios({
+    method: "GET",
+    url: "http://localhost:3000/roles",
+    responseType: "JSON",
+}).then(({ data }) => {
+    var html =
+        data &&
+        JSON.parse(data).map((item) => {
+            return `<option value="${item.id}">${item.name}</option>`;
+        });
+    $("#role").innerHTML = html.join("");
+});
